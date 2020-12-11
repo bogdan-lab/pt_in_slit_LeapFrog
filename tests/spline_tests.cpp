@@ -1,5 +1,6 @@
 ﻿#define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
+#include <sstream>
 
 #include "spline.hpp"
 
@@ -24,5 +25,20 @@ TEST_CASE("testing spline calls", "[spline]"){
     CHECK(tst(5)==6);
     CHECK(tst(3)==4);
     CHECK(tst(2.5)==3.5);
+}
+
+
+TEST_CASE("build from file", "[spline]"){
+    std::stringstream ss;
+    ss << R"(#x, cm	y, cm
+          1.0	2.0
+          2.0	3.0
+          3.0	14.0
+          4.0	5.0
+          5.0	6.0)";
+    Spline tst(ss);
+    CHECK(tst(1)==2);
+    CHECK(tst(5)==6);
+    CHECK(tst(3)==14);
 }
 

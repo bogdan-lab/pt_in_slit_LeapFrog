@@ -1,19 +1,17 @@
 ﻿#include "spline.hpp"
 
 
-Spline::Spline(const std::string& filename){
-    std::ifstream input(filename);
-    if(!input.is_open()){
-        fprintf(stderr, "Cannot open file %s\n", filename.c_str());
-        exit(EXIT_FAILURE);
-    }
+Spline::Spline(std::istream& input){
     double tmp_x, tmp_y;
+    input >> std::ws;
+    char c = static_cast<char>(input.peek());
+    if(c=='#') input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     while(input>>tmp_x >> tmp_y){
         x_.push_back(tmp_x);
         y_.push_back(tmp_y);
     }
     if(!std::is_sorted(x_.cbegin(), x_.cend())){
-        fprintf(stderr, "Expected spline in file %s to be sorted!", filename.c_str());
+        fprintf(stderr, "Expect spline to be sorted!");
         exit(EXIT_FAILURE);
     }
 }
