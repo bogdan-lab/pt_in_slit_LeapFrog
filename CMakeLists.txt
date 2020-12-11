@@ -1,7 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.19)
 
-project(LeapFrog_Pt_in_slit
-	LANGUAGES CXX)
+project(LeapFrog_Pt_in_slit)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
