@@ -3,7 +3,9 @@
 #include <cmath>
 #include <vector>
 #include <string>
-#include <cstdio>
+#include <algorithm>
+
+#include "spline.hpp"
 
 struct Settings{
     double D; 	//slit height m
