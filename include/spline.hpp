@@ -22,6 +22,7 @@ public:
     double operator()(double gx) const;
     std::pair<size_t, size_t> bin_search_range(double g_x) const;
     Spline GetGenerator() const;
+    Spline& Scale(const double scale);
 };
 
 

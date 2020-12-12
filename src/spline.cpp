@@ -49,3 +49,8 @@ Spline Spline::GetGenerator() const{
         x /= integral.back();});
     return Spline(std::move(integral), std::move(x_));
 }
+
+Spline& Spline::Scale(const double scale){
+    std::for_each(y_.begin(), y_.end(), [&](double& val){val *= scale;});
+    return *this;
+}

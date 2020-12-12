@@ -59,3 +59,13 @@ TEST_CASE("generator test", "[spline]"){
         CHECK(got>=expected-1e-15);
     }
 }
+
+TEST_CASE("scaling test", "[spline]"){
+    Spline tst({1,2,3,4,5}, {5,4,3,2,1});
+    tst.Scale(2.0);
+    CHECK(tst(1)==10);
+    CHECK(tst(5)==2);
+    tst.Scale(0.5);
+    CHECK(tst(1)==5);
+    CHECK(tst(5)==1);
+}
