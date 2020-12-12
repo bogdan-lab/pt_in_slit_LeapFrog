@@ -40,3 +40,12 @@ std::pair<size_t, size_t> Spline::bin_search_range(double g_x) const {
     return std::make_pair(left, right);
 }
 
+Spline Spline::GetGenerator() const{
+    std::vector<double> integral(y_.size(), 0.0);
+    for(size_t i=1; i<y_.size(); i++){
+        integral[i] = integral[i-1] + 0.5*(x_[i]-x_[i-1])*(y_[i]+y_[i-1]);
+    }
+    std::for_each(integral.begin(), integral.end(), [&](double& x){
+        x /= integral.back();});
+    return Spline(std::move(integral), std::move(x_));
+}

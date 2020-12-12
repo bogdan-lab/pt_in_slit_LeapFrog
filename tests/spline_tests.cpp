@@ -42,3 +42,20 @@ TEST_CASE("build from file", "[spline]"){
     CHECK(tst(3)==14);
 }
 
+TEST_CASE("generator test", "[spline]"){
+    Spline tst({0,1,2,3}, {3,2,1,0});
+    Spline gen = tst.GetGenerator();
+    CHECK(gen(1.0)==3);
+    CHECK(gen(0.0)==0);
+    //CHECK(gen(0.5)==0.5*(6.0-6.0*sqrt(1-0.5)));
+
+    Spline unif({1,2,3,4,5,6}, {1,1,1,1,1,1});
+    Spline gen_unif = unif.GetGenerator();
+    for(double i=0; i<1.0; i+=0.01){
+        double expected = 1.0+5.0*i;
+        double got = gen_unif(i);
+        //printf("NEXT\ni = %.15e\ngot = %.15e\nexp = %.15e\n", i, got, expected);
+        CHECK(got<=expected+1e-15);
+        CHECK(got>=expected-1e-15);
+    }
+}
