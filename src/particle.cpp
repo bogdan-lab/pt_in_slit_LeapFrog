@@ -2,7 +2,7 @@
 
 
 std::optional<PtStat> trace_particle(std::mt19937& rnd_gen, const Settings& opt,
-                const Spline& E_gen, const Spline& potential){
+          const Spline& E_gen, const Spline& potential, const Spline& mfp){
     std::uniform_real_distribution<double> dist(0, 1.0);
     double cos_alpha = dist(rnd_gen);
     double phi = dist(rnd_gen)*2*M_PI;
@@ -12,7 +12,7 @@ std::optional<PtStat> trace_particle(std::mt19937& rnd_gen, const Settings& opt,
     double Vy = V*sin(phi)*sin_alpha;
     double Vz = V*cos(phi)*sin_alpha;
     //Vz is not traced since in this direction slit is infinite
-    double dt = opt.D/(Vy*100);
+    double dt = opt.D/(Vy*10);
     double x = 0;
     double y = opt.D/2;
     std::vector<double> x_trace = {x};
@@ -28,9 +28,15 @@ std::optional<PtStat> trace_particle(std::mt19937& rnd_gen, const Settings& opt,
     size_t surf_col_count = 0;
     while(x>=0){
         Vx = Vx_prev + dt*F(x)/opt.m;
-        x += Vx*dt;
+        double dx = Vx*dt;
+        double dy = Vy*dt;
+        double dz = Vz*dt;
+        double dl = sqrt(dx*dx + dy*dy + dz*dz);
+        x += dx;
         x_trace.push_back(x);
-        y+= Vy*dt;
+        y+= dy;
+        //WITH REFLECTION I NEED TO TAKE INTO ACCOUNT THAT PARTICLE MOVEMENT
+        //AWAY FROM THE WALL NOW I SIMPLY THROW IT AWAY!
         if(y>opt.D){
             y = opt.D;
             if(dist(rnd_gen)>opt.R) return std::nullopt; 	//did not reflect

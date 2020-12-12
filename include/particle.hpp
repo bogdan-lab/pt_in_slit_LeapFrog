@@ -19,7 +19,7 @@ struct PtStat{
 };
 
 std::optional<PtStat> trace_particle(std::mt19937& rnd_gen, const Settings& opt,
-                const Spline& E_gen, const Spline& potential);
+   const Spline& E_gen, const Spline& potential, const Spline& mfp);
 
 
 

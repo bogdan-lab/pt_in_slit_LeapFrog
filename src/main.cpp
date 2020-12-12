@@ -24,13 +24,15 @@ int main(){
     opt.out_file = "statistics.txt";
     opt.energy_fname = "Maxwel_T_10.00eV.txt";
     opt.phi_fname = "Phi_shape_L_0.04cm.txt";
+    opt.mfp_fname = "mfp_P_5.00_Pa.txt";
 
     //download energy distribution and make generator
     std::ifstream energy_dist_file = load_helper(opt.energy_fname);
     Spline energy(energy_dist_file);
     Spline E_gen = energy.GetGenerator();
     //download mfp dependence on energy
-    //Spline mfp_dep(load_helper(""));
+    std::ifstream mfp_file = load_helper(opt.mfp_fname);
+    Spline mfp(mfp_file);
     //download potetnial curve
     std::ifstream phi_shape_file = load_helper(opt.phi_fname);
     Spline potential(phi_shape_file);
@@ -39,7 +41,7 @@ int main(){
     std::mt19937 rnd_gen(42);
     std::vector<PtStat> particle_statistics;
     for(size_t i=0; i<opt.pt_num; i++){
-        auto res = trace_particle(rnd_gen, opt, E_gen, potential);
+        auto res = trace_particle(rnd_gen, opt, E_gen, potential, mfp);
         if(res){
             particle_statistics.push_back(res.value());
         }

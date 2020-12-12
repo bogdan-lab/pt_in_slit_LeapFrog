@@ -20,6 +20,7 @@ struct Settings{
     std::string out_file;
     std::string energy_fname;
     std::string phi_fname;
+    std::string mfp_fname;
 
     void SaveSettings(FILE* savefile) const ;
 };
