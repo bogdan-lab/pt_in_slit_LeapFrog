@@ -1,5 +1,7 @@
 ﻿add_library(leapfrog_tracer SHARED
                 spline.cpp
+                particle.cpp
+                settings.cpp
 		)
 
 target_link_libraries(leapfrog_tracer PUBLIC full_set_warnings m)

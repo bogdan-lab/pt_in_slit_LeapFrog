@@ -4,6 +4,8 @@ Want to estimate depth of the particle penetration into the slit including act o
 
 ## TODO
 
--[] Simple particle reflection (no gas, no potential)
--[] Add potential effect - Leap frog
--[] Add gas effect (?)
+-[X] Simple particle reflection (no gas, no potential)
+
+-[X] Add potential effect - Leap frog
+
+-[] Add gas effect
