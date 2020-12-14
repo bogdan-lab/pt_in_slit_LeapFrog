@@ -5,7 +5,7 @@ std::optional<PtStat> trace_particle(std::mt19937& rnd_gen, const Settings& opt,
           const Spline& E_gen, const Spline& potential, const Spline& mfp){
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     double energy = E_gen(dist(rnd_gen));
-    if(energy<fabs(opt.phi_val)) return std::nullopt; //no chance particle will reach!
+    if(energy<fabs(potential(0) - potential(opt.L))) return std::nullopt; //no chance particle will reach!
     double Vscale = sqrt(2*energy*1.602e-19/opt.m);
     TVec V = get_random_velocity(rnd_gen, std::make_pair(0.0, 1.0), Vscale);
     //Vz is not traced since in this direction slit is infinite

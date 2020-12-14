@@ -17,6 +17,7 @@ struct Settings{
     double phi_val; 	//Scale for potential curve
     double R; 	//reflection coefficient
     double dt; 	//time step in s
+    size_t num_threads;
     size_t pt_num;
     std::string out_file;
     std::string energy_fname;

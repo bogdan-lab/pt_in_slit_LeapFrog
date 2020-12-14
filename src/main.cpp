@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <optional>
+#include <omp.h>
 
 #include "spline.hpp"
 #include "settings.hpp"
@@ -19,9 +20,10 @@ int main(){
     opt.m = 9.1e-31;
     opt.Q = -1.602e-19;
     opt.phi_val = 2.0;
-    opt.pt_num = 100;
+    opt.pt_num = 1000000;
     opt.R = 0.7;
     opt.dt = 5e-14;
+    opt.num_threads = 6;
     opt.out_file = "statistics.txt";
     opt.energy_fname = "Maxwel_T_10.00eV.txt";
     opt.phi_fname = "Phi_shape_L_0.04cm.txt";
@@ -39,14 +41,28 @@ int main(){
     Spline potential(phi_shape_file);
     potential.Scale(opt.phi_val);
 
-    std::mt19937 rnd_gen(42);
     std::vector<PtStat> particle_statistics;
-    for(size_t i=0; i<opt.pt_num; i++){
-        if((10*i)%opt.pt_num==0) std::cerr << 100.0*static_cast<double>(i)/static_cast<double>(opt.pt_num) << "%\n";
-        auto res = trace_particle(rnd_gen, opt, E_gen, potential, mfp);
-        if(res) particle_statistics.push_back(res.value());
+    omp_set_num_threads(static_cast<int>(opt.num_threads));
+    std::vector<size_t> thread_load(opt.num_threads, opt.pt_num/opt.num_threads);
+    thread_load.back() += opt.pt_num%opt.num_threads;
+    #pragma omp parallel
+    {
+        size_t tid = static_cast<uint>(omp_get_thread_num());
+        std::mt19937 rnd_gen(static_cast<uint>(time(0))+tid);
+        size_t counter = 0;
+        while(counter<thread_load[tid]){
+            auto res = trace_particle(rnd_gen, opt, E_gen, potential, mfp);
+            #pragma omp critical
+            if(res) particle_statistics.push_back(res.value());
+            #pragma omp master
+            {
+                if(counter%(thread_load[tid]/10)==0){
+                    std::cout << (100*counter)/thread_load[tid] << "%" << std::endl;
+                }
+            }
+            counter++;
+        }
     }
-
     SaveResult(opt.out_file, particle_statistics, opt);
 
     return 0;
