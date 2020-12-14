@@ -8,4 +8,4 @@ Want to estimate depth of the particle penetration into the slit including act o
 
 -[X] Add potential effect - Leap frog
 
--[] Add gas effect
+-[X] Add gas effect

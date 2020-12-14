@@ -15,12 +15,12 @@ if __name__ == "__main__":
     
     data = np.loadtxt(args.in_file)
     P = float(args.pressure)
-    data = np.column_stack((data[:,0]*1.602e-19, 0.01/(data[:,1]*P*0.0075)))  #0.0075 to transform Pa into Torr
+    data = np.column_stack((data[:,0], 0.01/(data[:,1]*P*0.0075)))  #0.0075 to transform Pa into Torr
     #now data has [energy J, mfp, m]
     filename = "mfp_P_%.2f_Pa.txt" % P
     if len(args.out_file)>0:
         filename = args.out_file
-    np.savetxt(filename, data, fmt="%.10e", delimiter="\t", header="energy, J\tmfp, m")
+    np.savetxt(filename, data, fmt="%.10e", delimiter="\t", header="energy, eV\tmfp, m")
     
     if args.show_fig:
         plt.figure()

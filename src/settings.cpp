@@ -31,10 +31,10 @@ void SaveResult(const std::string& filename, const std::vector<PtStat>& stat,
         exit(EXIT_FAILURE);
     }
     opt.SaveSettings(f_out);
-    fprintf(f_out, "#Vx, m/s\tVy, m/s\tVz, m/s\tE, eV\tsurface collisions\n");
+    fprintf(f_out, "#Vx, m/s\tVy, m/s\tVz, m/s\tE, eV\tsurface collisions\tvolume collisions\n");
     for(size_t i=0; i<stat.size(); i++){
-        fprintf(f_out, "%.10e\t%.10e\t%.10e\t%.10e\t%zu\n",
-         stat[i].Vx, stat[i].Vy, stat[i].Vz, stat[i].E, stat[i].surf_col_count);
+        fprintf(f_out, "%.10e\t%.10e\t%.10e\t%.10e\t%zu\t%zu\n",
+         stat[i].V[0], stat[i].V[1], stat[i].V[2], stat[i].E, stat[i].surf_col_count, stat[i].vol_col_count);
     }
     fclose(f_out);
 }
