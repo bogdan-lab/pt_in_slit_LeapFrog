@@ -13,4 +13,6 @@ find_package(OpenMP REQUIRED)
 add_executable(program
                 main.cpp)
 
-target_link_libraries(program PRIVATE leapfrog_tracer OpenMP::OpenMP_CXX)
+target_link_libraries(program PRIVATE leapfrog_tracer
+                                        OpenMP::OpenMP_CXX
+                                        CONAN_PKG::lyra)

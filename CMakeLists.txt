@@ -21,6 +21,7 @@ include(cmake/conan.cmake)
 conan_check(VERSION 1.14.4 REQUIRED)
 conan_cmake_run(REQUIRES
                 catch2/2.13.3
+                lyra/1.5.1
         OPTIONS BASIC_SETUP CMAKE_TARGETS
         BUILD missing)
 
